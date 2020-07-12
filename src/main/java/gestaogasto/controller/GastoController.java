@@ -20,27 +20,30 @@ import gestaogasto.response.Response;
 import gestaogasto.service.GastoService;
 
 @RestController
-@RequestMapping(value="/santander")
+@RequestMapping(value="v1/gastos")
 public class GastoController {
-	
-	private static final String TODOS_ATUAIS = "/gasto/maisatuais";
-	private static final String INSERIR_GASTO = "/gasto/inserir";
-	private static final String CATEGORIZA_GASTO = "/gasto/categoriza";
-	private static final String AUTO_CATEGORIZA_GASTO = "/gasto/auto_categoriza";
-	private static final String GASTOS_POR_DATA = "/gasto/pordata";
+
+	private static final String TODOS_ATUAIS = "/";
+	private static final String INSERIR_GASTO = "/inserir";
+	private static final String CATEGORIZA_GASTO = "/categoriza";
+	private static final String AUTO_CATEGORIZA_GASTO = "/auto_categoriza";
+	private static final String GASTOS_POR_DATA = "/pordata";
 	
 	@Autowired
 	private GastoService gastoService;
-	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+
+	@GetMapping(value = "/health")
+	public ResponseEntity<String> health() {
+		return ResponseEntity.ok("OK");
+	}
+
 	@GetMapping(value=TODOS_ATUAIS)
 	public ResponseEntity<Response> getListaTodosGastosMaisAtuais() {	
 		Response response = new Response<>();
 		response.setData(this.gastoService.listaGastosMaisAtuais());	
 		return ResponseEntity.ok(response);
 	}
-	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+
 	@GetMapping(value=GASTOS_POR_DATA)
 	public ResponseEntity<Response<List<Gasto>>> getListaGastosPorData(@Valid @RequestParam("data") String dataGasto) {
 		
